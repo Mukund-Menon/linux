@@ -1,0 +1,100 @@
+%YAML 1.2
+---
+$id: http://devicetree.org/schemas/thermal/ti-bandgap.yaml#
+$schema: http://devicetree.org/meta-schemas/core.yaml#
+
+title: Texas Instruments OMAP SCM Bandgap Bindings
+
+description: |
+  In the System Control Module, OMAP supplies a voltage reference
+  and a temperature sensor feature that are gathered in the band
+  gap voltage and temperature sensor (VBGAPTS) module. The band
+  gap provides current and voltage reference for its internal
+  circuits and other analog IP blocks. The analog-to-digital
+  converter (ADC) produces an output value that is proportional
+  to the silicon temperature.
+
+properties:
+  compatible:
+    description: Compatibility strings for the specific bandgap hardware.
+    items:
+      - enum:
+          - "ti,omap34xx-bandgap"
+          - "ti,omap36xx-bandgap"
+          - "ti,omap4430-bandgap"
+          - "ti,omap4460-bandgap"
+          - "ti,omap4470-bandgap"
+          - "ti,omap5430-bandgap"
+          - "ti,dra752-bandgap"
+
+  interrupts:
+    description: Specifies which interrupt line the talert signal is routed to.
+    items:
+      - type: array
+      - minItems: 1
+
+  gpios:
+    description: GPIO line the tshut signal is routed to.
+    items:
+      - type: array
+
+  reg:
+    description: Register addresses and sizes for the bandgap hardware.
+    items:
+      - type: array
+
+required:
+  - compatible
+  - reg
+  
+additionalProperties: false
+
+examples:
+  - |
+    OMAP34xx:
+      bandgap {
+        reg = <0x48002524 0x4>;
+        compatible = "ti,omap34xx-bandgap";
+      }
+
+    OMAP36xx:
+      bandgap {
+        reg = <0x48002524 0x4>;
+        compatible = "ti,omap36xx-bandgap";
+      }
+
+    OMAP4430:
+      bandgap {
+        reg = <0x4a002260 0x4 0x4a00232C 0x4>;
+        compatible = "ti,omap4430-bandgap";
+      }
+
+    OMAP4460:
+      bandgap {
+        reg = <0x4a002260 0x4 0x4a00232C 0x4 0x4a002378 0x18>;
+        compatible = "ti,omap4460-bandgap";
+        interrupts = <0 126 4>; # talert
+        gpios = <&gpio3 22 0>; # tshut
+      }
+
+    OMAP4470:
+      bandgap {
+        reg = <0x4a002260 0x4 0x4a00232C 0x4 0x4a002378 0x18>;
+        compatible = "ti,omap4470-bandgap";
+        interrupts = <0 126 4>; # talert
+        gpios = <&gpio3 22 0>; # tshut
+      }
+
+    OMAP5430:
+      bandgap {
+        reg = <0x4a0021e0 0xc 0x4a00232c 0xc 0x4a002380 0x2c 0x4a0023C0 0x3c>;
+        compatible = "ti,omap5430-bandgap";
+        interrupts = <0 126 4>; # talert
+      }
+
+    DRA752:
+      bandgap {
+        reg = <0x4a0021e0 0xc 0x4a00232c 0xc 0x4a002380 0x2c 0x4a0023C0 0x3c 0x4a002564 0x8 0x4a002574 0x50>;
+        compatible = "ti,dra752-bandgap";
+        interrupts = <0 126 4>; # talert
+      }
